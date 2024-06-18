@@ -38,7 +38,8 @@ Adafruit_NeoPixel lent(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 //---------------RELAY----------------
 #define RELAY_PIN 31
-
+//---------------DISTANCE-------------
+#define SHARP_PIN A13
 
 //---------------SERVOS----------------
 //PINS
@@ -76,7 +77,7 @@ Servo table_serv;
 #define CLAWLOPEN 170
 #define CLAWLOPENISH 115
 
-#define CLAWRCLOSE 15
+#define CLAWRCLOSE 13
 #define CLAWRCLOSECUBE 130
 #define CLAWROPEN 180
 #define CLAWROPENISH 125
@@ -130,7 +131,9 @@ bool ultra_lgbt_flag = 0;
 bool musor = 0;
 
 char left_grob = ' ';
-char start_cubes[2] = {' ', ' '};
+char right_grob = ' ';
+char start_cubes[2] = {'b', 'b'};
+float delhehe = 0;
 
 GyverOLED<SSD1306_128x64, OLED_BUFFER> oled;
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
@@ -142,10 +145,6 @@ TCS34725 tcs_left;
 
 void setup(void) {
   Serial.begin(115200);
-
-
-
-
 
   //------------------------PINS------------------------
   pinMode(ma1, OUTPUT);
@@ -175,13 +174,14 @@ void setup(void) {
   tcs_left.gain(TCS34725::Gain::X01);
 
   if ( apds.init() ) {
-    Serial.println(F("APDS-9960 initialization complete"));
+    //    Serial.println(F("APDS-9960 initialization complete"));
+    delay(1);
   } else {
-    Serial.println(F("Something went wrong during APDS-9960 init!"));
+    delay(1);
   }
 
   if ( apds.enableLightSensor(false) ) {
-    Serial.println(F("Light sensor is now running"));
+    delay(1);
   } else {
     Serial.println(F("Something went wrong during light sensor init!"));
   }
@@ -195,10 +195,7 @@ void setup(void) {
         !apds.readBlueLight(blue_light) ) {
     Serial.println("Error reading light values");
   } else {
-    Serial.print(" Green: ");
-    Serial.print(green_light);
-    Serial.print(" Blue: ");
-    Serial.println(blue_light);
+    delay(1);
   }
 
   delay(100);
@@ -210,17 +207,19 @@ void setup(void) {
   claw_r.attach(MANIPUL_CLAW_R);
   ramk.attach(RAMK_SERV);
 
+  digitalWrite(RELAY_PIN, 1);
+  delay(50);
 
   manup_l.write(MANUPL);
   manup_r.write(MANUPR);
   delay(100);
-  claw_l.write(CLAWLOPEN);
+  claw_l.write(CLAWLOPENISH);
   claw_r.write(CLAWROPENISH);
 
   delay(250);
 
-  claw_l.write(CLAWLCLOSECUBE);
-  claw_r.write(CLAWRCLOSECUBE);
+  claw_l.write(CLAWLCLOSE);
+  claw_r.write(CLAWRCLOSE);
   //  claw_l.write(CLAWLOPENISH);
   //  claw_r.write(CLAWROPENISH);fh
   //  palk_r.write(0);
@@ -230,8 +229,7 @@ void setup(void) {
   //  delay(2000);
   table_serv.write(94);
   ramk.write(90);
-  digitalWrite(RELAY_PIN, 1);
-  delay(50);
+
 
   beep(100);
 
@@ -261,7 +259,7 @@ void setup(void) {
 
 //------------------------------------------------------- START TYPE -------------------------------------------------------------
 
-#define START_TYPE  0// 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
+#define START_TYPE  1 // 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
 
 
 
@@ -269,29 +267,39 @@ void loop(void) {
   //----------------------testing------------------------------
   //    char aaaaa[8]={'d','d','b','r','y','g','g','y'};
   //      for(int i = 0; i<4;i++){
-//  wait_button(0);
+  //    wait_button(0);
+  //    MoveSync(60,60,0,300,1);
+  //    wait_button(0);
+  //    MoveSync(90,90,0,300,1);
+  //    wait_button(0);
+  //    MoveSync(120,120,0,300,1);
+  //    wait_button(0);
+  //    MoveSync(180,180,0,300,1);
   //              indicate8(aaaaa);
   //          DoubleGrab();
   //}
 
   //  for (int i = 0; i < 4; i++) {
-//  most();
+  //  most();
   //    RightGrab();
   //  }
   //  manRightUp();
   //  delay(500);
   //  RightUnload();
-//delay(10000);
-
+  //delay(10000);
+  //  wait_button(0);
+  //  ramkTube();
+  //  wait_button(0);
+  //  drive(-60,-60);
 
   //-----------------------main program------------------------
 
   wait_button(0);
-//  time = millis();
+  time = millis();
 //  start();
   main_loop();
   timer();
   wait_button(0);
 
-  //  delay(10000);*/
+  //  delay(10000);
 }

@@ -84,11 +84,17 @@ void pidx(float kp, float ki, float kd, float sped, int razgon, int overdrive,  
 
   if (overdrive > 0)
     pidenc(kp, ki, kd, sped * 0.8, 0, overdrive, stop);
-  else if (stop>0) {
-    drive (-250 * sped / abs(sped), -250 * sped / abs(sped));
-    delay((abs(sped) / 255) * stop);
+  else if (stop > 10) { //резко тормоз
+    drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
+    delay(((abs(sped) + abs (sped)) / 2) / 255 * stop);
     drive (0, 0);
-    beep(100);
+    delay(200);
+  }
+  else if (stop > 0 and stop < 10){
+    drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
+    delay(((abs(sped) + abs (sped)) / 2) / 255 * round(autoBreak(((abs(sped)+abs(sped)))/2)));
+    drive (0, 0);
+    delay(200);
   }
 }
 
@@ -174,11 +180,17 @@ void pidenc(float kp, float ki, float kd, float sped, int razgon, int dist, int 
     drive(mot1 * sped / abs(sped), mot2 * sped / abs(sped));
   }
 
-  if (stop >0) {
+  if (stop > 10) { //резко тормоз
     drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
     delay(((abs(sped) + abs (sped)) / 2) / 255 * stop);
     drive (0, 0);
-    delay(100);
+    delay(200);
+  }
+  else if (stop > 0 and stop < 10){
+    drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
+    delay(((abs(sped) + abs (sped)) / 2) / 255 * round(autoBreak(((abs(sped)+abs(sped)))/2)));
+    drive (0, 0);
+    delay(200);
   }
 }
 

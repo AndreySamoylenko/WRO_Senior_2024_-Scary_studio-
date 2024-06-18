@@ -9,24 +9,55 @@ void R2Y2() {
 }
 
 void sborGB(int pos) {
+//   wait_button(0);
   switch (pos) {
-
     case 12:
+      beep(50);
+      beep(150);
       DoubleGrab();
       break;
 
     case 22:
+      beep(150);
+      beep(150);
       RightGrab();
-      MoveSync(80, 80, 0, 98, 100);
+      MoveSync(80, 80, 0, 98, 80);
       RightGrab();
       break;
 
     case 11:
+      beep(50);
+      beep(50);
       LeftGrab();
-      MoveSync(-80, -80, 0, 102, 100);
+      MoveSync(-80, -80, 0, 98, 80);
       LeftGrab();
       break;
+
+    case 21:
+      beep(150);
+      beep(50);
+      MoveSync(80, 80, 0, 95, 80);
+      RightGrab();
+      MoveSync(-80, -80, 0, 190, 70);
+      LeftGrab();
+      break;
+
+
+
   }
   manRightUp();
   manLeftUp();
+}
+
+int logicGrab(char cubes[2]) {
+  int aaa = 0;
+  if (left_grob == cubes[0])
+    aaa = 10;
+  else
+    aaa = 20;
+  if (right_grob == cubes[1])
+    aaa += 2;
+  else
+    aaa += 1;
+  return aaa;
 }

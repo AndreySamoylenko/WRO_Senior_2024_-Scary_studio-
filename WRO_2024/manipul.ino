@@ -78,7 +78,7 @@ void manLeftDown(int pos) {
   else if (pos == 2)
     manup_l.write(MANDOWNISHISHL);
   else if (pos == 3)
-    manup_l.write(MANDOWNL - 7);
+    manup_l.write(MANDOWNL - 5);
   else if (pos == 5)
     manup_l.write(MANDOWNISHL);
 
@@ -200,7 +200,7 @@ void ramkVeryUp() {
 }
 
 void ramkTube() {
-  ramk.write(17);
+  ramk.write(15);
 }
 
 void ramkTubeUp(int del) {

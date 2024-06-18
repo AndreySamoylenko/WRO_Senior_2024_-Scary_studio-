@@ -93,26 +93,21 @@ void getColors() {
     delay(25);
   }
 
-  if ((r_g > r_b) and r_c > 9 * 0) {
+  if ((r_g > r_b) ) {
     colorr = 'g' ;
   }
-  else if ((r_g < r_b) and r_c > 9 * 0) {
+  else if ((r_g < r_b) ) {
     colorr = 'b';
   }
-  else {
-    colorr = 'd';
-  }
 
 
-  if ((l_g > l_b) and l_c > 60 * 0) {
+  if (l_g > l_b) {
     colorl = 'g' ;
   }
-  else if ((l_g < l_b) and l_c > 60 * 0) {
+  else if (l_g < l_b) {
     colorl = 'b';
   }
-  else {
-    colorl = 'd';
-  }
+
 
   Serial.println(millis() - time2);
 }

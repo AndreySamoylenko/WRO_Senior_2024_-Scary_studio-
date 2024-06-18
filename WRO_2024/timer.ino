@@ -26,3 +26,8 @@ oled.clear();
   oled.update();
   delay(10000);
 }
+
+
+int autoBreak(float speed){
+  return round(log10(speed+5)/log10(1.0114381)) - 270;
+}

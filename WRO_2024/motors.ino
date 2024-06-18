@@ -62,8 +62,8 @@ void MoveSync (float sped1, float sped2,  int r, uint32_t dist, int stop) {
         sped2 = MIN_SPEED + ((millis() - timer) / 200) * (sped2 - MIN_SPEED);
       }
       else if(dist > 150 and (sped1>=150 and sped2 >=150) and dist-deg<50){
-        sped1 = sped11*0.7;
-        sped2 = sped22*0.7;
+        sped1 = sped11*0.6;
+        sped2 = sped22*0.6;
       }
       else {
         sped1 = sped11;
@@ -93,9 +93,15 @@ void MoveSync (float sped1, float sped2,  int r, uint32_t dist, int stop) {
 
     }
   }
-  if (stop > 0) { //резко тормоз
+  if (stop > 10) { //резко тормоз
     drive (-255 * sped1 / abs(sped1), -255 * sped2 / abs(sped2));
     delay(((abs(sped1) + abs (sped2)) / 2) / 255 * stop);
+    drive (0, 0);
+    delay(200);
+  }
+  else if (stop > 1 and stop < 10){
+    drive (-255 * sped1 / abs(sped1), -255 * sped2 / abs(sped2));
+    delay(((abs(sped1) + abs (sped2)) / 2) / 255 * round(autoBreak(((abs(sped1)+abs(sped2)))/2)));
     drive (0, 0);
     delay(200);
   }

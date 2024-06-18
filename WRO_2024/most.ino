@@ -19,10 +19,9 @@ void most() {
   manRightUp();
   delay(350);
   table_serv.write(92);
-  MoveSync(60, 50, 0, 20, 1);
+  MoveSync(60, 50, 0, 20, 20);
   getColors();
-  listmovel();
-  listmover();
+
   //  wait_button(0);
   digitalWrite(PASSIVE_A, 1);
   digitalWrite(PASSIVE_B, 0);
@@ -54,7 +53,12 @@ void most() {
 
   delay(300);
   if (colorr == colorl)
-    table_serv.write(158);
+    table_serv.write(155);
+  else
+    listmovel();
+    
+  listmover();
+
   digitalWrite(PASSIVE_A, 1);
   digitalWrite(PASSIVE_B, 0);
   delay(300);
@@ -62,10 +66,12 @@ void most() {
     manLeftDown(2);
   }
 
-  delay(3500);
+  delay(3400);
   digitalWrite(PASSIVE_A, 0);
-  delay(500);
-  pidenc(0.3, 0.03, 3, -80, 0, 400, 1);
+  delay(300);
+  pidenc(0.3, 0.03, 3, -80, 0, 400, 50);
+  left_grob = (colorr == 'b' ? 'g' : 'b');
+  right_grob = colorr;
   if (colorr == colorl) {
     manLeftDown(3);
     delay(300);
@@ -81,38 +87,27 @@ void most() {
     count_c_l = 0;
     colorl = ' ';
     listmovel();
-    left_grob = (colorr == 'b' ? 'g' : 'b');
   }
   else {
-    pidenc(0.2, 0.02, 3, -100, 1, (345), 1);
+    pidenc(0.2, 0.02, 3, -100, 1, (345), 30);
     left_grob = colorl;
   }
   if (START_TYPE == 0) {
     table_serv.write(28);
-    delay(200);
+    delay(400);
     pidx(0.3, 0.03, 3, 80, 0, 0, 100);
-    MoveSync(-90, 0, 0, 150, 100);
-    MoveSync(0, -90, 0, 143, 100);
+    MoveSync(-90, 0, 0, 148, 90);
+    MoveSync(0, -90, 0, 144, 90);
     manRightDown(2);
     manLeftDown(2);
-    MoveSync(-90, -90, 0, 60, 100);
+    MoveSync(-90, -90, 0, 65, 90);
 
-    sborGB(22);
+    sborGB(logicGrab(start_cubes));
 
-    MoveSync(0, -90, 0, 143, 100);
-    MoveSync(-90, 0, 0, 150, 100);
-
-    pidenc(0.3, 0.03, 3, 80, 0, 200, 100);
-
-
-
+    MoveSync(0, -90, 0, 143, 90);
+    MoveSync(-90, 0, 0, 150, 90);
+    pidenc(0.3, 0.03, 3, 90, 0, 300, 0);
   }
   manRightUp();
   manLeftUp();
-
-
-
-
-
-
 }
