@@ -18,7 +18,7 @@ void trashNeMost() {
   ramkUp();
   MoveSync(-90, -90, 0, 123, 5);
   ramkDown();
-  turn(90, -1, 91);
+  turn(95, -1, 90);
 
   MoveSync(-90, -90, 0, 130, 0);
   ramk.write(30);
@@ -26,7 +26,7 @@ void trashNeMost() {
   ramkTube();
   delay(300);
   MoveSync(-90, -90, 0, 30, 12);
-  driveToWall(68);
+  driveToWall(67);
   ramkTubeUp(4);
   delay(200);
   ramkDown();
@@ -34,18 +34,19 @@ void trashNeMost() {
   turn(90, 1, 88);
   MoveSync(120, 120, 0, 200, 0);
   drive(100, 100);
-  delay(500);
+  delay(700);
   stop();
   table_serv.write(28);
   MoveSync(-90, -90, 0, 75, 60);
   turn(90, 1, 88);
-  MoveSync(70, 70, 1, 140, 40);
+  MoveSync(70, 70, 1, 160, 40);
+  bread = 1;
   getColors();
   indicate1(colorr, 6);
   indicate1(colorl, 8);
   if (USE_LED == 1)
     lent.show();
-  MoveSync(-80, -80, 0, 50, 60);
+  MoveSync(-80, -80, 0, 53, 60);
   turn(90, -1, 90);
   manRightDown(2);
   manLeftDown(2);
@@ -54,10 +55,10 @@ void trashNeMost() {
   sborGB(logicGrab(colorsss));
 
   drive(100, 100);
-  delay(800);
+  delay(900);
   MoveSync(-90, -90, 0, 163, 100);
-  turn(90, -1, 88);
-  MoveSync(90, 90, 0, 270, 0);
+  turn(150, -1, 89);
+  MoveSync(90, 90, 0, 420, 0);
 }
 
 void sbros() {

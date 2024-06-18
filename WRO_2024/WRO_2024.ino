@@ -128,12 +128,11 @@ uint16_t red_light = 0;
 uint16_t green_light = 0;
 uint16_t blue_light = 0;
 bool ultra_lgbt_flag = 0;
-bool musor = 0;
+bool bread = 0;
 
 char left_grob = ' ';
 char right_grob = ' ';
 char start_cubes[2] = {'b', 'b'};
-float delhehe = 0;
 
 GyverOLED<SSD1306_128x64, OLED_BUFFER> oled;
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
@@ -278,7 +277,7 @@ void loop(void) {
   //              indicate8(aaaaa);
   //          DoubleGrab();
   //}
-
+  
   //  for (int i = 0; i < 4; i++) {
   //  most();
   //    RightGrab();
@@ -287,19 +286,20 @@ void loop(void) {
   //  delay(500);
   //  RightUnload();
   //delay(10000);
-  //  wait_button(0);
-  //  ramkTube();
-  //  wait_button(0);
+    wait_button(0);
+    ramkTube();
+    delay(600);
+    driveToWall(70);
   //  drive(-60,-60);
 
   //-----------------------main program------------------------
 
-  wait_button(0);
-  time = millis();
+//  wait_button(0);
+//  time = millis();
 //  start();
-  main_loop();
-  timer();
-  wait_button(0);
+//  main_loop();
+//  timer();
+//  wait_button(0);
 
   //  delay(10000);
 }

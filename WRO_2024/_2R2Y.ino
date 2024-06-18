@@ -38,7 +38,7 @@ void sborGB(int pos) {
       beep(50);
       MoveSync(80, 80, 0, 95, 80);
       RightGrab();
-      MoveSync(-80, -80, 0, 190, 70);
+      MoveSync(-80, -80, 0, 196-bread*16, 70);
       LeftGrab();
       break;
 
