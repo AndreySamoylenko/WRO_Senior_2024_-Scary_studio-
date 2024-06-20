@@ -1,44 +1,73 @@
 void R2Y2() {
   manLeftDown(2);
   RightGrab();
-  pidenc(0.3, 0.02, 3, (256 + 100), 1, (340), 100);
+  pidenc(0.3, 0.02, 3, (256 + 130), 0, (292), 90);
   DoubleGrab();
-  pidenc(0.3, 0, 2, (256 + 100), 1, (340), 100);
+  pidenc(0.3, 0, 2, (256 + 130), 0, (292), 90);
   LeftGrab();
   beep(100);
 }
 
 void sborGB(int pos) {
-//   wait_button(0);
+  //   wait_button(0);
   switch (pos) {
     case 12:
-      beep(50);
-      beep(150);
       DoubleGrab();
       break;
 
     case 22:
-      beep(150);
-      beep(150);
       RightGrab();
-      MoveSync(80, 80, 0, 98, 80);
+      if (bread == 1) {
+        table_serv.write(29);
+        beep(100);
+      }
+      MoveSync(80, 80, 0, 98, 8);
       RightGrab();
       break;
 
     case 11:
-      beep(50);
-      beep(50);
       LeftGrab();
-      MoveSync(-80, -80, 0, 98, 80);
+      MoveSync(-80, -80, 0, 98, 8);
       LeftGrab();
       break;
 
     case 21:
-      beep(150);
-      beep(50);
-      MoveSync(80, 80, 0, 95, 80);
+      MoveSync(80, 80, 0, 95, 8);
       RightGrab();
-      MoveSync(-80, -80, 0, 196-bread*16, 70);
+      MoveSync(-80, -80, 0, 196 - bread * 16, 7);
+      LeftGrab();
+      break;
+
+
+
+  }
+  manRightUp();
+  manLeftUp();
+}
+
+void sborGBinv(int pos) {
+  //   wait_button(0);
+  switch (pos) {
+    case 12:
+      DoubleGrab();
+      break;
+
+    case 22:
+      RightGrab();
+      MoveSync(-80, -80, 0, 98, 8);
+      RightGrab();
+      break;
+
+    case 11:
+      LeftGrab();
+      MoveSync(80, 80, 0, 98, 8);
+      LeftGrab();
+      break;
+
+    case 21:
+      MoveSync(-80, -80, 0, 95, 8);
+      RightGrab();
+      MoveSync(80, 80, 0, 196, 7);
       LeftGrab();
       break;
 

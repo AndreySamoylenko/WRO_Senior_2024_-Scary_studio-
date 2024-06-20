@@ -88,13 +88,13 @@ void pidx(float kp, float ki, float kd, float sped, int razgon, int overdrive,  
     drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
     delay(((abs(sped) + abs (sped)) / 2) / 255 * stop);
     drive (0, 0);
-    delay(200);
+    delay(50);
   }
   else if (stop > 0 and stop < 10){
     drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
     delay(((abs(sped) + abs (sped)) / 2) / 255 * round(autoBreak(((abs(sped)+abs(sped)))/2)));
     drive (0, 0);
-    delay(200);
+    delay(50);
   }
 }
 
@@ -184,13 +184,13 @@ void pidenc(float kp, float ki, float kd, float sped, int razgon, int dist, int 
     drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
     delay(((abs(sped) + abs (sped)) / 2) / 255 * stop);
     drive (0, 0);
-    delay(200);
+    delay(50);
   }
   else if (stop > 0 and stop < 10){
     drive (-255 * sped / abs(sped), -255 * sped / abs(sped));
     delay(((abs(sped) + abs (sped)) / 2) / 255 * round(autoBreak(((abs(sped)+abs(sped)))/2)));
     drive (0, 0);
-    delay(200);
+    delay(50);
   }
 }
 

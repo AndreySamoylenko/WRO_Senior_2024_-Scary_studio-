@@ -3,6 +3,7 @@ void wait_button(int param) {
   int frame = 0;
   bool lgbt_flag = false;
   digitalWrite(RELAY_PIN, 1);
+  time2 = millis();
   while (startFlag == 0) {
     if (param == 0) {
       if (digitalRead(buttonPin) == 1)
@@ -26,4 +27,5 @@ void wait_button(int param) {
     }
   }
   delay(300);
+  idle_time += millis()-time2;
 }

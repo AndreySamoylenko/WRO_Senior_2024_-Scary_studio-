@@ -1,12 +1,12 @@
 
-void RightUnload() {
+void RightUnload(int del) {
   manRightDown(0);
   delay(400);
   claw_r.write(CLAWROPEN);
   delay(300);
   for (int i = manup_r.read(); i < MANUPR; i++) {
     manup_r.write(i);
-    delay(6);
+    delay(del);
   }
   count_c_r = 0;
   delay(100);
@@ -20,14 +20,14 @@ void RightUnload() {
 }
 
 
-void LeftUnload() {
+void LeftUnload(int del) {
   manLeftDown(0);
   delay(400);
   claw_l.write(CLAWLOPEN);
   delay(300);
   for (int i = manup_l.read(); i > MANUPL; i--) {
     manup_l.write(i);
-    delay(11);
+    delay(del);
   }
   count_c_l = 0;
   delay(100);

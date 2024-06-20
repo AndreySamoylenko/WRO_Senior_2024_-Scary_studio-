@@ -1,65 +1,3 @@
-//void get_colorr() {
-//  uint16_t R, G, B;
-//  R = 0;
-//  G = 0;
-//  B = 0;
-//  for (int i = 0; i < 20; i++) {
-//    r = 0;
-//    g = r;
-//    b = r;
-//    tcs_software.getRawData(&r, &g, &b, &c);
-//    //    b = b * 1.2;
-//    R += r;
-//    G += g;
-//    B += b;
-//  }
-//  if (B > G) {
-//    Serial.println("blue l");
-//    colorr = 'b';
-//  }
-//
-//  else if (G > B) {
-//    Serial.println("green l");
-//    colorr = 'g';
-//  }
-//
-//  else  {
-//    Serial.println("xz l");
-//    colorr = ' ';
-//  }
-//}
-//
-//void getcolorl() {
-//  uint16_t R, G, B;
-//  R = 0;
-//  G = 0;
-//  B = 0;
-//  for (int i = 0; i < 20; i++) {
-//    TCS34725::RawData raw = tcs.raw();
-//    r = raw.r;
-//    g = raw.g;
-//    b = raw.b;
-//    //    b = b * 1.2;
-//    R += r;
-//    G += g;
-//    B += b;
-//  }
-//  if (B > G) {
-//    Serial.println("blue l");
-//    colorl = 'b';
-//  }
-//
-//  else if (G > B) {
-//    Serial.println("green l");
-//    colorl = 'g';
-//  }
-//
-//  else  {
-//    Serial.println("xz l");
-//    colorl = ' ';
-//  }
-//}
-
 
 void getColors() {
   int l_b = 0;
@@ -69,7 +7,6 @@ void getColors() {
   int r_c = 0;
   int l_c = 0;
 
-  time2 = millis();
   for (int i = 0; i < 30 ; i++) {
     if (  !apds.readAmbientLight(ambient_light) ||
           !apds.readRedLight(red_light) ||
@@ -109,5 +46,4 @@ void getColors() {
   }
 
 
-  Serial.println(millis() - time2);
 }

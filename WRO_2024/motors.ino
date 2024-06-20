@@ -57,11 +57,11 @@ void MoveSync (float sped1, float sped2,  int r, uint32_t dist, int stop) {
         e = countl * abs(sped2) / abs(sped1) - countr;
       }
 
-      if (r == 1 and k < 1 and (dist > 50 and deg < 300 and deg < 0.7 * dist) and (millis() - timer) < 200) {
+      if (r == 1  and (dist > 50 and deg < 300 and deg < 0.7 * dist) and (millis() - timer) < 200) {
         sped1 = MIN_SPEED + ((millis() - timer) / 200) * (sped1 - MIN_SPEED);
         sped2 = MIN_SPEED + ((millis() - timer) / 200) * (sped2 - MIN_SPEED);
       }
-      else if(dist > 150 and (sped1>=150 and sped2 >=150) and dist-deg<50){
+      else if(dist > 150 and (sped1>=150 and sped2 >=150) and dist-deg<90){
         sped1 = sped11*0.6;
         sped2 = sped22*0.6;
       }
@@ -97,18 +97,18 @@ void MoveSync (float sped1, float sped2,  int r, uint32_t dist, int stop) {
     drive (-255 * sped1 / abs(sped1), -255 * sped2 / abs(sped2));
     delay(((abs(sped1) + abs (sped2)) / 2) / 255 * stop);
     drive (0, 0);
-    delay(200);
+    delay(50);
   }
   else if (stop > 1 and stop < 10){
     drive (-255 * sped1 / abs(sped1), -255 * sped2 / abs(sped2));
     delay(((abs(sped1) + abs (sped2)) / 2) / 255 * round(autoBreak(((abs(sped1)+abs(sped2)))/2)));
     drive (0, 0);
-    delay(200);
+    delay(50);
   }
 }
 
 
 void turn(float sped, int side, int angle) {
-  delay(100);
-  MoveSync(side * sped, -side * sped, 0, angle * 1.76, 120*(abs(sped)/255));
+  delay(50);
+  MoveSync(side * sped, -side * sped, 0, angle * 1.73, 6);
 }

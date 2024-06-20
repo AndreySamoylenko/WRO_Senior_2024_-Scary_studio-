@@ -73,11 +73,11 @@ Servo table_serv;
 #define MANDOWNDROPR 68
 
 #define CLAWLCLOSE 5
-#define CLAWLCLOSECUBE 120
-#define CLAWLOPEN 170
-#define CLAWLOPENISH 115
+#define CLAWLCLOSECUBE 125
+#define CLAWLOPEN 180
+#define CLAWLOPENISH 120
 
-#define CLAWRCLOSE 13
+#define CLAWRCLOSE 15
 #define CLAWRCLOSECUBE 130
 #define CLAWROPEN 180
 #define CLAWROPENISH 125
@@ -114,14 +114,14 @@ volatile long countl = 0;
 volatile long countr = 0;
 int r2y_count = 0;
 
-
 char colorr = 'r';
 char colorl = 'y';
-char colorsl[4] = {' ', ' ', ' ', ' '};
-char colorsr[4] = {' ', ' ', ' ', ' '};
+char colorsl[4] = {'g', 'g', ' ', ' '};
+char colorsr[4] = {'b', 'b', ' ', ' '};
 
 uint32_t time = millis();
 uint32_t time2 = millis();
+uint32_t idle_time = 0;
 
 uint16_t ambient_light = 0;
 uint16_t red_light = 0;
@@ -130,9 +130,10 @@ uint16_t blue_light = 0;
 bool ultra_lgbt_flag = 0;
 bool bread = 0;
 
-char left_grob = ' ';
-char right_grob = ' ';
-char start_cubes[2] = {'b', 'b'};
+char left_grob = 'g';
+char right_grob = 'b';
+char start_cubes[2] = {'g', 'b'};
+const char random_colors[8] = {'r', 'y', 'g', 'b', 'd', 'r', 'y', 'g'};
 
 GyverOLED<SSD1306_128x64, OLED_BUFFER> oled;
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
@@ -162,10 +163,11 @@ void setup(void) {
   digitalWrite(buzz, 0);
   digitalWrite(A3, 0);
   digitalWrite(A7, 1);
-  beep(100);
+  beep(200);
   //-----------------------TCS--------------------------
 
   Wire.begin();
+  Wire.setClock(400000L);
   if (!tcs_left.attach(Wire))
     Serial.println("ERROR: TCS34725 NOT FOUND !!!");
 
@@ -230,7 +232,7 @@ void setup(void) {
   ramk.write(90);
 
 
-  beep(100);
+  beep(200);
 
   //  digitalWrite(RELAY_PIN, 0);
   //------------------------OLED-------------------------
@@ -258,48 +260,51 @@ void setup(void) {
 
 //------------------------------------------------------- START TYPE -------------------------------------------------------------
 
-#define START_TYPE  1 // 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
+#define START_TYPE  0 // 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
 
+// start
+// 1 - 28.4 secs
+// 0 - 28.5 secs
+// most
+// 20 - 24 secs
 
 
 void loop(void) {
   //----------------------testing------------------------------
-  //    char aaaaa[8]={'d','d','b','r','y','g','g','y'};
-  //      for(int i = 0; i<4;i++){
-  //    wait_button(0);
-  //    MoveSync(60,60,0,300,1);
-  //    wait_button(0);
-  //    MoveSync(90,90,0,300,1);
-  //    wait_button(0);
-  //    MoveSync(120,120,0,300,1);
-  //    wait_button(0);
-  //    MoveSync(180,180,0,300,1);
-  //              indicate8(aaaaa);
-  //          DoubleGrab();
-  //}
-  
-  //  for (int i = 0; i < 4; i++) {
-  //  most();
-  //    RightGrab();
-  //  }
-  //  manRightUp();
-  //  delay(500);
-  //  RightUnload();
-  //delay(10000);
-    wait_button(0);
-    ramkTube();
-    delay(600);
-    driveToWall(70);
-  //  drive(-60,-60);
+
+  time = millis();
+  wait_button(0);
+  //  pidx(0.3, 0.03, 3, 120, 1, 0, 9);
+  //  obstacle();
+  pidx(0.2, 0.02, 3, 60, 0, 0, 60);
+  pidenc(0.3, 0.02, 3, -100, 1, 400, 0);
+  pidenc(0.3, 0.03, 3, -250, 0, 1400, 0);
+  pidenc(0.3, 0.03, 3, -90, 0, 600, 0);
+  trashNeMost();
+  turnl(1, 90, 1);
+  pidenc(0.4, 0.03, 4, 70, 1, 500, 0);
+  pidenc(0.3, 0.02, 3, 255, 0, 1400, 0);
+  pidenc(0.3, 0.02, 3, 170, 0, 600, 0);
+  pidx(0.2, 0.02, 3, 60, 0, 0, 100);
+  MoveSync(-180, -180, 0, 30, 20);
+
+  sbros();
+  timer();
+  delay(1000);
+  //  turn(120,1,90);
+  //  Serial.println(get_distance());
+  //  ramkTube();
+  //  delay(600);
+  //  driveToWall(530);
+
 
   //-----------------------main program------------------------
-
-//  wait_button(0);
-//  time = millis();
-//  start();
-//  main_loop();
-//  timer();
-//  wait_button(0);
+  //  time = millis();
+  //  wait_button(0);
+  //  start();
+  //  main_loop();
+  //  timer();
+  //  wait_button(0);
 
   //  delay(10000);
 }
