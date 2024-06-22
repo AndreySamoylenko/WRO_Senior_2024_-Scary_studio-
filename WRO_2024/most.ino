@@ -13,31 +13,34 @@ void most() {
   delay(1000);
   delay(300);
   drive(0, 0);
-  delay(2700);
+  delay(2900);
   digitalWrite(PASSIVE_B, 0);
   manLeftUp();
   manRightUp();
   delay(350);
   table_serv.write(92);
-  MoveSync(70, 0, 0, 20, 12);
-  MoveSync(50, 50, 0, 10, 12);
+  MoveSync(70, 70, 0, 20, 12);
   getColors();
 
   //  wait_button(0);
   digitalWrite(PASSIVE_A, 1);
   digitalWrite(PASSIVE_B, 0);
   drive(-255, -255);
-  delay(350);
+  delay(380);
   drive(0, 0);
   digitalWrite(PASSIVE_A, 0);
 
-  allClaws(1);
-  manRightDown(1);
-  manLeftDown(1);
+  claw_r.write(CLAWRCLOSE + 15);
+  claw_l.write(CLAWLCLOSE + 15);
+  delay(200);
+  //  wait_button(0);
+  manup_r.write(MANDOWNISHR - 0);
+  manup_l.write(MANDOWNISHL + 0);
   delay(600);
   claw_r.write(CLAWROPENISH);
-  claw_l.write(CLAWLOPENISH + 20);
-  delay(200);
+  claw_l.write(CLAWLOPENISH);
+  //  wait_button(0);
+  delay(400);
 
   manup_r.write(MANDOWNR - 3);
   manup_l.write(MANDOWNL + 3);
@@ -74,7 +77,8 @@ void most() {
   left_grob = (colorr == 'b' ? 'g' : 'b');
   right_grob = colorr;
   if (colorr == colorl) {
-    manLeftDown(3);    delay(300);
+    manLeftDown(3);
+    delay(300);
     claw_l.write(CLAWLOPEN);
     delay(200);
     manLeftUp();
@@ -85,8 +89,7 @@ void most() {
     delay(200);
     manRightUp();
     count_c_l = 0;
-    colorl = ' ';
-    listmovel();
+    colorl = (colorr == 'b' ? 'g' : 'b');
   }
   else {
     pidenc(0.3, 0.03, 3, -100, 1, (305), 0);
@@ -97,12 +100,12 @@ void most() {
     table_serv.write(28);
     pidenc(0.3, 0.03, 3, -120, 1, (305), 12);
     pidx(0.3, 0.03, 3, 80, 0, 0, 9);
-    pidenc(0.3, 0.03, 3, -120, 1, (245), 12);
+    pidenc(0.3, 0.03, 3, -120, 1, (255), 12);
     MoveSync(-90, 0, 0, 145, 70);
     MoveSync(0, -90, 0, 140, 70);
     manRightDown(2);
     manLeftDown(2);
-  
+
     sborGB(logicGrab(start_cubes));
 
     MoveSync(0, -90, 0, 140, 70);

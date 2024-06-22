@@ -12,7 +12,7 @@ void listmovel() {
   else {
     colorsl[0] = colorl;
   }
-  ultra_lgbt_flag = 0;
+  ultra_lgbt_flag = 1;
   lenta_color(colorsl);
 }
 
@@ -30,7 +30,7 @@ void listmover() {
   else {
     colorsr[0] = colorr;
   }
-  ultra_lgbt_flag = 1;
+  ultra_lgbt_flag = 0;
   lenta_color(colorsr);
 }
 

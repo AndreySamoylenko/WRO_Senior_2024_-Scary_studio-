@@ -41,5 +41,7 @@ void broItsCRINGE(byte bite) {
   for (int i = 0; i < 8; i++)
     if (bit_is_set(bite, i))
       indicate1(random_colors[i], i * 2);
+    else
+      indicate1(' ', i * 2);
   lent.show();
 }

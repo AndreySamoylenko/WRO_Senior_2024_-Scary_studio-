@@ -261,24 +261,28 @@
 
 void start() {
   ramkUp();
+  left_grob = ' ';
+  right_grob = ' ';
+//  colorsl[4] = {' ', ' ', ' ', ' '};
+//  colorsr[4] = {' ', ' ', ' ', ' '};
   allClaws(3);
   table_serv.write(157);
-
+  t_up();
   beep(300);
   delay(100);
 
   MoveSync(-150, 0, 0, 100, 100);
   MoveSync(0, -150, 0, 95, 100);
-  pidenc(0.2, 0.02, 3, (256 + 120), 0, 615 , 20);
+  pidenc(0.2, 0.02, 3, (256 + 120), 0, 645 , 20);
 
   R2Y2();
   manLeftUp();
   manRightUp();
 
   // доезд до синезеленых кубов возле старта
-  pidenc(0.2, 0.02, 3, (256 + 150), 0, (660), 80);
-  turn(120, -1, 90);
-  MoveSync(110, 110, 0, 45, 100);
+  pidenc(0.2, 0.02, 3, (256 + 150), 0, (640), 80);
+  turn(90, -1, 90);
+  MoveSync(120, 120, 0, 45, 70);
   getColors();// собстна скан
   indicate1(colorr, 8);
   indicate1(colorl, 6);
@@ -288,7 +292,7 @@ void start() {
   start_cubes[0] = colorl;
   colorr = 'r';
   colorl = 'y';
-  MoveSync(-120, -120, 0, 90, 100);
+  MoveSync(-120, -120, 0, 90, 70);
   turn(120, 1, 90);
 
   if (START_TYPE == 0) {
@@ -303,8 +307,8 @@ void start() {
     stop();
     // подъезд к красно-жёлтым кубам
     MoveSync(100, 0, 1, 298, 70);
-    MoveSync(90, 90, 0, 50, 20);
-    pidenc(0.3, 0.03, 3, (255 + 120), 0, 350, 90);
+    MoveSync(90, 90, 0, 60, 20);
+    pidenc(0.3, 0.03, 3, (255 + 120), 0, 420, 90);
     table_serv.write(156);
 
     R2Y2();
@@ -312,8 +316,8 @@ void start() {
     turn(120, 1, 88);
     MoveSync(150, 150, 1, 80, 0);
     MoveSync(250, 250, 0, 320, 0);
-    MoveSync(100, 100, 0, 80, 100);
-    turn(120, -1, 88);
+    MoveSync(100, 100, 0, 80, 90);
+    turn(120, -1, 87);
 
 
     MoveSync(60, 60, 0, 160, 70);
@@ -330,7 +334,7 @@ void start() {
     pidenc(0.2, 0.02, 3, 130, 0, 820, 20);
     stop();
 
-    MoveSync(100, 0, 1, 305, 0);
+    MoveSync(100, 0, 1, 307, 0);
     MoveSync(250, 250, 1, 150, 0);
     MoveSync(120, 120, 0, 150, 90);
     pidenc(0.4, 0.03, 3, (255 + 100), 0, 575, 40);
@@ -352,5 +356,6 @@ void start() {
   turn(120, 1, 90);
   pidx(0, 0, 0, 200, 0, 120, 80);
   turnl(-1, 120, 1);
+
 
 }

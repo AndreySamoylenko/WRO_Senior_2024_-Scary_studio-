@@ -13,60 +13,69 @@ void trashMost() {
 }
 
 void trashNeMost() {
-  MoveSync(-110, -110, 0, 230, 5);
+  MoveSync(-110, -110, 0, 220, 22);
   turn(100, 1, 90);
   ramkUp();
-  MoveSync(-90, -90, 0, 138, 12);
+  MoveSync(-90, -90, 0, 135, 22);
   ramkDown();
   delay(300);//забрали желтый
-  MoveSync(90, 90, 0, 20, 12);
+  MoveSync(90, 90, 0, 35, 40);// отъехали от него
 
-  turn(80, -1, 91);
+  turn(90, -1, 93);
 
-  MoveSync(-90, -90, 0, 130, 0);
-  ramk.write(30);
-  MoveSync(-90, -90, 0, 150, 12);
-  ramkTube();   // забрали чёрный
-  wait_button(0);
-  
-  driveToWall(645);
-  ramkTubeUp(4); // сделали трубу
-  delay(500);
+  MoveSync(-90, -90, 0, 140, 0);// едем в сторону трубы
+  ramk.write(30); // приподнятое положение рамки чтобы собрать черный и не потерять остальные
+  MoveSync(-90, -90, 0, 140, 22); // продолжаем ехать в сторону трубы
   ramkDown();
+  delay(150);
+  ramkTube();   // забрали чёрный и приподняли рамку
+  delay(100);
+
+  //  wait_button(0);
+
+  driveToWall(615); // доезд по датчику
+  ramkTubeUp(3); // сделали трубу
+  delay(400);
+  ramkDown(); // не отпускаем мусор
   delay(200);
-  MoveSync(120, 120, 0, 120, 90);
+  MoveSync(120, 120, 0, 120, 90); // отЪехали от трубы
   turn(110, 1, 90);
-  MoveSync(190, 190, 0, 200, 0);
-  drive(100, 100);
+  MoveSync(190, 190, 0, 180, 0);
+  drive(100, 100); // доезд до стены перед кубами
   delay(700);
   stop();
   table_serv.write(28);
-  MoveSync(-110, -110, 0, 70, 60);
-  turn(100, 1, 91);
-  MoveSync(60, 60, 1, 160, 40);
-    wait_button(0);
-  bread = 1;
+  delay(150);
+  MoveSync(-110, -110, 0, 40, 60);// отъехали от стены
+  turn(100, 1, 100);
+  MoveSync(80, 80, 1, 180, 40); // 
   getColors();
+
+  MoveSync(0, 90, 1, 30, 40);
+  bread = 1;
+
 
   indicate1(colorr, 6);
   indicate1(colorl, 8);
   if (USE_LED == 1)
     lent.show();
-  MoveSync(-100, -100, 0, 56, 60);
-  turn(100, -1, 90);
+  MoveSync(-100, -100, 0, 53, 60);
+  turn(90, -1, 93);
+  MoveSync(-80, -80, 0, 20, 9);
   manRightDown(2);
   manLeftDown(2);
   delay(300);
+  bread = 1;
   char colorsss[2] = {colorl, colorr};
   sborGB(logicGrab(colorsss));
   bread = 0;
   drive(100, 100);
   delay(900);
-  MoveSync(-120, -120, 0, 160, 90);
-  turn(90, -1, 90);
-  MoveSync(250, 250, 0, 400, 0);
+  MoveSync(-120, -120, 0, 145, 90);
+  turn(90, -1, 93);
+  MoveSync(250, 250, 0, 460, 0);
   MoveSync(50, 50, 0, 50, 50);
-  wait_button(0);
+  //  wait_button(0);
 }
 
 void sbros() {
@@ -75,8 +84,8 @@ void sbros() {
   MoveSync(-90, -90, 0, 200, 0);
   ramkDown();
   MoveSync(-90, -90, 0, 100, 5);
-  MoveSync(0, -90, 0, 120, 0);
-  MoveSync(-200, -200, 1, 390, 0);
+  MoveSync(0, -90, 0, 130, 0);
+  MoveSync(-200, -200, 1, 370, 0);
   MoveSync(-80, -80, 0, 100, 20);
   ramkUp();
   delay(200);

@@ -20,7 +20,7 @@ void wait_button(int param) {
       }
       calibration(frame);
 
-      Serial.print(countl); Serial.print("   "); Serial.println(countr);
+//      Serial.print(countl); Serial.print("   "); Serial.println(countr);
 
       if ( millis() % 50 >= 0 and millis() % 50 < 10)
         oled.update();

@@ -72,7 +72,7 @@ void calibration(int frame) {
       Serial.print("dat1 : "); Serial.print(sensors_value(1)); Serial.print("   dat2 : "); Serial.print(sensors_value(2));
       Serial.print("  dat3 : "); Serial.print(sensors_value(3)); Serial.print("   dat4 : "); Serial.print(sensors_value(4));
       Serial.print("  dat5 : "); Serial.print(sensors_value(5)); Serial.print("   dat6 : "); Serial.println(sensors_value(6));
-      Serial.print("not mapped");
+      Serial.println("not mapped");
       break;
 
 

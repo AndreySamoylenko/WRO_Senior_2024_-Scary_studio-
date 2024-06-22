@@ -13,6 +13,8 @@
 #define LED_COUNT 16
 #define USE_LED 1
 Adafruit_NeoPixel lent(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+//------------------------- COLOR SENSOR STATE -------------
+#define STATE_PIN 34
 
 //------------------------- DRIVER -------------------------
 #define ma1 6
@@ -49,6 +51,7 @@ Adafruit_NeoPixel lent(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 #define MANIPUL_CLAW_R 17
 #define TABLE_SERVO 3
 #define RAMK_SERV 15
+#define T_SERVO 13
 
 
 // initialisation
@@ -58,6 +61,7 @@ Servo manup_r;
 Servo claw_l;
 Servo claw_r;
 Servo ramk;
+Servo t_servo;
 Servo table_serv;
 //---------------------------MANIPULATOR-----------------
 #define MANUPL 33
@@ -72,13 +76,13 @@ Servo table_serv;
 #define MANDOWNISHISHR 64
 #define MANDOWNDROPR 68
 
-#define CLAWLCLOSE 5
-#define CLAWLCLOSECUBE 125
+#define CLAWLCLOSE 7
+#define CLAWLCLOSECUBE 92
 #define CLAWLOPEN 180
-#define CLAWLOPENISH 120
+#define CLAWLOPENISH  110
 
-#define CLAWRCLOSE 15
-#define CLAWRCLOSECUBE 130
+#define CLAWRCLOSE 15 
+#define CLAWRCLOSECUBE 92
 #define CLAWROPEN 180
 #define CLAWROPENISH 125
 
@@ -116,8 +120,8 @@ int r2y_count = 0;
 
 char colorr = 'r';
 char colorl = 'y';
-char colorsl[4] = {'g', 'g', ' ', ' '};
-char colorsr[4] = {'b', 'b', ' ', ' '};
+char colorsl[4] = {' ', ' ', ' ', ' '};
+char colorsr[4] = {' ', ' ', ' ', ' '};
 
 uint32_t time = millis();
 uint32_t time2 = millis();
@@ -130,9 +134,9 @@ uint16_t blue_light = 0;
 bool ultra_lgbt_flag = 0;
 bool bread = 0;
 
-char left_grob = 'g';
-char right_grob = 'b';
-char start_cubes[2] = {'g', 'b'};
+char left_grob = ' ';
+char right_grob = ' ';
+char start_cubes[2] = {' ', ' '};
 const char random_colors[8] = {'r', 'y', 'g', 'b', 'd', 'r', 'y', 'g'};
 
 GyverOLED<SSD1306_128x64, OLED_BUFFER> oled;
@@ -159,6 +163,7 @@ void setup(void) {
   pinMode(buttonPin, INPUT);
   pinMode(A3, OUTPUT);
   pinMode(A7, OUTPUT);
+  pinMode(STATE_PIN, OUTPUT);
   digitalWrite(RELAY_PIN, 0);
   digitalWrite(buzz, 0);
   digitalWrite(A3, 0);
@@ -206,10 +211,14 @@ void setup(void) {
   manup_r.attach(MANIPUL_UP_R);
   claw_l.attach(MANIPUL_CLAW_L);
   claw_r.attach(MANIPUL_CLAW_R);
+  t_servo.attach(T_SERVO);
   ramk.attach(RAMK_SERV);
 
   digitalWrite(RELAY_PIN, 1);
   delay(50);
+
+  t_down();
+
 
   manup_l.write(MANUPL);
   manup_r.write(MANUPR);
@@ -250,7 +259,7 @@ void setup(void) {
   //------------------------LENTA----------------------------
   lent.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
   lent.show();            // Turn OFF all pixels ASAP
-  lent.setBrightness(40);
+  lent.setBrightness(60);
   //---------------------------------------------------------
   delay(300);
   digitalWrite(RELAY_PIN, 1);
@@ -260,7 +269,7 @@ void setup(void) {
 
 //------------------------------------------------------- START TYPE -------------------------------------------------------------
 
-#define START_TYPE  0 // 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
+#define START_TYPE  1 // 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
 
 // start
 // 1 - 28.4 secs
@@ -271,40 +280,70 @@ void setup(void) {
 
 void loop(void) {
   //----------------------testing------------------------------
+  //  pidx(0.3, 0.02, 3, 80, 0, 0, 80);
+  //
+  //  MoveSync(0, -120, 0, 230, 60);
+  //  MoveSync(-120, 0, 0, 250, 60);
 
-  time = millis();
-  wait_button(0);
-  //  pidx(0.3, 0.03, 3, 120, 1, 0, 9);
-  //  obstacle();
-  pidx(0.2, 0.02, 3, 60, 0, 0, 60);
-  pidenc(0.3, 0.02, 3, -100, 1, 400, 0);
-  pidenc(0.3, 0.03, 3, -250, 0, 1400, 0);
-  pidenc(0.3, 0.03, 3, -90, 0, 600, 0);
-  trashNeMost();
-  turnl(1, 90, 1);
-  pidenc(0.4, 0.03, 4, 70, 1, 500, 0);
-  pidenc(0.3, 0.02, 3, 255, 0, 1400, 0);
-  pidenc(0.3, 0.02, 3, 170, 0, 600, 0);
-  pidx(0.2, 0.02, 3, 60, 0, 0, 100);
-  MoveSync(-180, -180, 0, 30, 20);
+  //
+  //  if (left_grob == 'b') {
+  //    MoveSync(-90, -90, 0, 90, 60);
+  //    delay(200);
+  //    RightUnload(9);
+  //    MoveSync(-90, -90, 0, 80, 60);
+  //    delay(200);
+  //    LeftUnload(9);
+  //  }
+  //  else {
+  //    LeftUnload(9);
+  //    MoveSync(-90, -90, 0, 310, 60);
+  //    delay(200);
+  //    RightUnload(9);
+  //  }
+  //  if (START_TYPE == 1) {
+  //    MoveSync(150, 150, 0, 250, 20);
+  //    MoveSync(23, 250, 0, 350, 20);
+  //    MoveSync(250, 250, 0, 240, 160);
+  //  }
+  //  else {
+  //    MoveSync(-255, 0, 0, 100, 0);
+  //    ramkDown();
+  //    MoveSync(-255, -255, 0, 400, 20);
+  //  }
+//  wait_button(0);
+//    table_serv.write(156);
+//  pidx(0.2, 0.02, 3, 70, 0, 0, 60);
+//  obstacle();
+//  t_up();
+//  most();
+  //pidx(0.2, 0.02, 3, 60, 0, 0, 60);
+  //  pidenc(0.3, 0.02, 3, -100, 1, 400, 0);
+  //  pidenc(0.3, 0.03, 3, -250, 0, 1400, 0);
+  //  pidenc(0.3, 0.03, 3, -90, 0, 600, 0);
+  //
+  //  trashNeMost();
+  //
+  //  if (sensors(1) > 100 and sensors(2) > 100)
+  //    turnl(-1, 90, 1);
+  //
+  //  pidenc(0.4, 0.03, 4, 70, 1, 500, 0);
+  //  pidenc(0.3, 0.02, 3, 255, 0, 1400, 0);
+  //  pidenc(0.3, 0.02, 3, 170, 0, 600, 0);
+  //  pidx(0.2, 0.02, 3, 60, 0, 0, 100);
+  //
+  //  MoveSync(-180, -180, 0, 30, 20);
+  //
+  //  sbros();
 
-  sbros();
-  timer();
-  delay(1000);
-  //  turn(120,1,90);
-  //  Serial.println(get_distance());
-  //  ramkTube();
-  //  delay(600);
-  //  driveToWall(530);
 
 
   //-----------------------main program------------------------
-  //  time = millis();
-  //  wait_button(0);
-  //  start();
-  //  main_loop();
-  //  timer();
-  //  wait_button(0);
+    time = millis();
+    wait_button(0);
+    start();
+    main_loop();
+    timer();
+    wait_button(0);
 
-  //  delay(10000);
+      delay(10000);
 }

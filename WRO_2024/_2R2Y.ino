@@ -1,9 +1,9 @@
 void R2Y2() {
   manLeftDown(2);
   RightGrab();
-  pidenc(0.3, 0.02, 3, (256 + 130), 0, (292), 90);
+  pidenc(0.3, 0.02, 3, (256 + 100), 0, (312), 90);
   DoubleGrab();
-  pidenc(0.3, 0, 2, (256 + 130), 0, (292), 90);
+  pidenc(0.3, 0, 2, (256 + 100), 0, (302), 90);
   LeftGrab();
   beep(100);
 }
@@ -29,6 +29,9 @@ void sborGB(int pos) {
       LeftGrab();
       MoveSync(-80, -80, 0, 98, 8);
       LeftGrab();
+      if (bread ==1)
+        MoveSync(80, 80, 0, 98, 8);
+        
       break;
 
     case 21:

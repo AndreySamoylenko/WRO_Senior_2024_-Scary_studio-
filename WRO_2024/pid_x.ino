@@ -135,7 +135,7 @@ void pidenc(float kp, float ki, float kd, float sped, int razgon, int dist, int 
 
     if (GayFlag) {
       dat1 = sensors(6);
-      dat2 = sensors(5) - 30;
+      dat2 = sensors(5);
     }
     else {
       if (sped > 0) {

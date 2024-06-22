@@ -47,3 +47,12 @@ void getColors() {
 
 
 }
+
+
+void get_color_man() {
+  delay(200);
+  if ( get_distance() > 130 and get_distance() < 170)
+    colorl = 'g';
+  else if  ( get_distance() > 625 and get_distance() < 700)
+    colorl = 'b';
+}

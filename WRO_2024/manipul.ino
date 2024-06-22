@@ -27,6 +27,10 @@ void LeftGrab() {
     manLeftDown(2);
     delay(200);
   }
+  if (bread == 1 and count_c_l == 0) {
+    claw_l.write(CLAWLOPENISH);
+    delay(200);
+  }
   manLeftDown(1);
   delay(100);
   claw_l.write(CLAWLOPENISH);
@@ -81,6 +85,8 @@ void manLeftDown(int pos) {
     manup_l.write(MANDOWNL - 3);
   else if (pos == 5)
     manup_l.write(MANDOWNISHL);
+    else if (pos == 7)
+    manup_l.write(MANDOWNL-15);
 
 }
 
@@ -200,13 +206,24 @@ void ramkVeryUp() {
 }
 
 void ramkTube() {
-  ramk.write(15);
+  ramk.write(12);
 }
 
 void ramkTubeUp(int del) {
-  for (int i = ramk.read(); i < 70; i++) {
+  for (int i = ramk.read(); i < 80; i++) {
+    if (i>40 and i < 70)
+    drive(-30,-30);
+    else
+      stop();
     ramk.write(i);
     delay(del);
 
   }
+}
+
+void t_up(){
+  t_servo.write(180);
+}
+void t_down(){
+  t_servo.write(25);
 }
