@@ -1,11 +1,12 @@
-#include <GyverOLED.h>
-#include <Servo.h>
-#include <Wire.h>
-#include <SparkFun_APDS9960.h>
-#include "TCS34725.h"
-#include <Adafruit_NeoPixel.h>
-#ifdef __AVR__
-#include <avr/power.h> // Required for 16 MHz Adafruit Trinket
+// подключение всякого
+#include <GyverOLED.h>          // олег
+#include <Servo.h>              // крутилки
+#include <Wire.h>               // что то для I2C
+#include <SparkFun_APDS9960.h>  // датчик цвета 1
+#include "TCS34725.h"           // датчик цвета 2
+#include <Adafruit_NeoPixel.h>  // лента
+#ifdef __AVR__                  // ваще хз чо это
+#include <avr/power.h>          // Required for 16 MHz Adafruit Trinket
 #endif
 
 //----------------------- LED_STRIP ----------------------------
@@ -17,7 +18,7 @@ Adafruit_NeoPixel lent(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 #define STATE_PIN 34
 
 //------------------------- DRIVER -------------------------
-#define ma1 6
+#define ma1 6 // пины всякого
 #define ma2 4
 #define mb1 8
 #define mb2 10
@@ -64,7 +65,7 @@ Servo ramk;
 Servo t_servo;
 Servo table_serv;
 //---------------------------MANIPULATOR-----------------
-#define MANUPL 33
+#define MANUPL 33 // всякие константы, замеренные через боль пот и слёзы
 #define MANDOWNL 105
 #define MANDOWNISHL 92
 #define MANDOWNISHISHL 80
@@ -81,7 +82,7 @@ Servo table_serv;
 #define CLAWLOPEN 180
 #define CLAWLOPENISH  110
 
-#define CLAWRCLOSE 15 
+#define CLAWRCLOSE 7
 #define CLAWRCLOSECUBE 92
 #define CLAWROPEN 180
 #define CLAWROPENISH 125
@@ -90,7 +91,7 @@ Servo table_serv;
 //--------------------------------------------------------
 #define MIN_SPEED 50
 
-
+// калибровка всякого
 
 int datflmin = 516;
 int datfrmin = 508;
@@ -118,37 +119,40 @@ volatile long countl = 0;
 volatile long countr = 0;
 int r2y_count = 0;
 
-char colorr = 'r';
-char colorl = 'y';
-char colorsl[4] = {' ', ' ', ' ', ' '};
-char colorsr[4] = {' ', ' ', ' ', ' '};
 
-uint32_t time = millis();
+// объявление всякого
+char colorr = 'r'; // цвет после скана цвета слева
+char colorl = 'y';// то же самое только справа
+char colorsl[4] = {'b', 'b', 'b', ' '}; // массив кубов левого шкафа
+char colorsr[4] = {'g', 'g', 'g', ' '}; // массив кубов правого
+
+uint32_t time = millis(); // переменные нужные для подсчета времени
 uint32_t time2 = millis();
 uint32_t idle_time = 0;
 
-uint16_t ambient_light = 0;
+uint16_t ambient_light = 0; // переменые для датчиков цвета
 uint16_t red_light = 0;
 uint16_t green_light = 0;
 uint16_t blue_light = 0;
-bool ultra_lgbt_flag = 0;
+
+bool ultra_lgbt_flag = 0; // флаги
 bool bread = 0;
 
-char left_grob = ' ';
-char right_grob = ' ';
-char start_cubes[2] = {' ', ' '};
-const char random_colors[8] = {'r', 'y', 'g', 'b', 'd', 'r', 'y', 'g'};
+char left_grob = colorsl[0];  // цвет кубов, которые везем в левом шкафу
+char right_grob = colorsr[0]; // то же самое для правого
+char start_cubes[2] = {' ', ' '}; // цвет кубов у старта
+const char random_colors[8] = {'r', 'y', 'g', 'b', 'd', 'r', 'y', 'g'}; // не важн
 
-GyverOLED<SSD1306_128x64, OLED_BUFFER> oled;
-SparkFun_APDS9960 apds = SparkFun_APDS9960();
-TCS34725 tcs_left;
+GyverOLED<SSD1306_128x64, OLED_BUFFER> oled; // инициализация дисплея
+SparkFun_APDS9960 apds = SparkFun_APDS9960(); // правого датчика цвета
+TCS34725 tcs_left; // левого датчика цвета
 
 
 
 
 
 void setup(void) {
-  Serial.begin(115200);
+  Serial.begin(115200); // старт монитора порта
 
   //------------------------PINS------------------------
   pinMode(ma1, OUTPUT);
@@ -161,32 +165,31 @@ void setup(void) {
   pinMode(buzz, OUTPUT);
   pinMode(RELAY_PIN, OUTPUT);
   pinMode(buttonPin, INPUT);
-  pinMode(A3, OUTPUT);
-  pinMode(A7, OUTPUT);
+  pinMode(A3, OUTPUT); // питание бокового датчик линии 1
+  pinMode(A7, OUTPUT); // питание бокового датчик линии 2
   pinMode(STATE_PIN, OUTPUT);
   digitalWrite(RELAY_PIN, 0);
   digitalWrite(buzz, 0);
-  digitalWrite(A3, 0);
-  digitalWrite(A7, 1);
+  digitalWrite(A3, 0); // минус бокового датчика линии
+  digitalWrite(A7, 1); // плюс его же
   beep(200);
   //-----------------------TCS--------------------------
 
-  Wire.begin();
-  Wire.setClock(400000L);
-  if (!tcs_left.attach(Wire))
+  Wire.begin(); // запуск i2c
+  Wire.setClock(400000L); // разгон i2c
+  if (!tcs_left.attach(Wire)) // проверка наличия датчика
     Serial.println("ERROR: TCS34725 NOT FOUND !!!");
 
-  tcs_left.integrationTime(33); // ms
+  tcs_left.integrationTime(33); // настройка времени считывания
   tcs_left.gain(TCS34725::Gain::X01);
 
-  if ( apds.init() ) {
-    //    Serial.println(F("APDS-9960 initialization complete"));
+  if ( apds.init() ) { // раздупление правого датчика, тк первый скан всегда комом
     delay(1);
   } else {
     delay(1);
   }
 
-  if ( apds.enableLightSensor(false) ) {
+  if ( apds.enableLightSensor(false) ) { // второй этап раздупления
     delay(1);
   } else {
     Serial.println(F("Something went wrong during light sensor init!"));
@@ -195,7 +198,7 @@ void setup(void) {
   // Wait for initialization and calibration to finish
   delay(400);
 
-  if (  !apds.readAmbientLight(ambient_light) ||
+  if (  !apds.readAmbientLight(ambient_light) || // финальный этап раздупления
         !apds.readRedLight(red_light) ||
         !apds.readGreenLight(green_light) ||
         !apds.readBlueLight(blue_light) ) {
@@ -217,9 +220,9 @@ void setup(void) {
   digitalWrite(RELAY_PIN, 1);
   delay(50);
 
-  t_down();
 
 
+  t_up();
   manup_l.write(MANUPL);
   manup_r.write(MANUPR);
   delay(100);
@@ -230,20 +233,11 @@ void setup(void) {
 
   claw_l.write(CLAWLCLOSE);
   claw_r.write(CLAWRCLOSE);
-  //  claw_l.write(CLAWLOPENISH);
-  //  claw_r.write(CLAWROPENISH);fh
-  //  palk_r.write(0);
-  //  palk_l.write(180);
-
-  //  table_serv.write(180);
-  //  delay(2000);
   table_serv.write(94);
   ramk.write(90);
 
 
   beep(200);
-
-  //  digitalWrite(RELAY_PIN, 0);
   //------------------------OLED-------------------------
   oled.init();
   oled.rect(0, 0, 128, 64);
@@ -265,6 +259,7 @@ void setup(void) {
   digitalWrite(RELAY_PIN, 1);
   delay(150);
   ramk.write(130);
+  t_down();
 }
 
 //------------------------------------------------------- START TYPE -------------------------------------------------------------
@@ -280,70 +275,31 @@ void setup(void) {
 
 void loop(void) {
   //----------------------testing------------------------------
-  //  pidx(0.3, 0.02, 3, 80, 0, 0, 80);
-  //
-  //  MoveSync(0, -120, 0, 230, 60);
-  //  MoveSync(-120, 0, 0, 250, 60);
-
-  //
-  //  if (left_grob == 'b') {
-  //    MoveSync(-90, -90, 0, 90, 60);
-  //    delay(200);
-  //    RightUnload(9);
-  //    MoveSync(-90, -90, 0, 80, 60);
-  //    delay(200);
-  //    LeftUnload(9);
-  //  }
-  //  else {
-  //    LeftUnload(9);
-  //    MoveSync(-90, -90, 0, 310, 60);
-  //    delay(200);
-  //    RightUnload(9);
-  //  }
-  //  if (START_TYPE == 1) {
-  //    MoveSync(150, 150, 0, 250, 20);
-  //    MoveSync(23, 250, 0, 350, 20);
-  //    MoveSync(250, 250, 0, 240, 160);
-  //  }
-  //  else {
-  //    MoveSync(-255, 0, 0, 100, 0);
-  //    ramkDown();
-  //    MoveSync(-255, -255, 0, 400, 20);
-  //  }
 //  wait_button(0);
-//    table_serv.write(156);
-//  pidx(0.2, 0.02, 3, 70, 0, 0, 60);
-//  obstacle();
 //  t_up();
-//  most();
-  //pidx(0.2, 0.02, 3, 60, 0, 0, 60);
-  //  pidenc(0.3, 0.02, 3, -100, 1, 400, 0);
-  //  pidenc(0.3, 0.03, 3, -250, 0, 1400, 0);
-  //  pidenc(0.3, 0.03, 3, -90, 0, 600, 0);
-  //
-  //  trashNeMost();
-  //
-  //  if (sensors(1) > 100 and sensors(2) > 100)
-  //    turnl(-1, 90, 1);
-  //
-  //  pidenc(0.4, 0.03, 4, 70, 1, 500, 0);
-  //  pidenc(0.3, 0.02, 3, 255, 0, 1400, 0);
-  //  pidenc(0.3, 0.02, 3, 170, 0, 600, 0);
-  //  pidx(0.2, 0.02, 3, 60, 0, 0, 100);
-  //
-  //  MoveSync(-180, -180, 0, 30, 20);
-  //
-  //  sbros();
-
-
-
+//  table_serv.write(158);
+//  pidx(0.2, 0.02, 3, 60, 0, 0, 60);
+//  //  most();
+//  //  wait_button(0);
+//  obstacle();
+//digitalWrite(STATE_PIN,1);
+//delay(200);
+//digitalWrite(STATE_PIN,0);
+//delay(200);
+//while(1){
+//  get_color_man();
+//  indicate1(colorl,6);
+//  Serial.println(get_distance());
+//  lent.show();
+//  delay(600);
+//}
   //-----------------------main program------------------------
-    time = millis();
-    wait_button(0);
-    start();
-    main_loop();
-    timer();
-    wait_button(0);
+  time = millis();
+  wait_button(0);
+  start();
+  main_loop();
+  timer();
+  wait_button(0);
 
-      delay(10000);
+  delay(100000);
 }

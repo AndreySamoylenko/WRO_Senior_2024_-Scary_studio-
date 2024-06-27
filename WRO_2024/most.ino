@@ -26,24 +26,24 @@ void most() {
   digitalWrite(PASSIVE_A, 1);
   digitalWrite(PASSIVE_B, 0);
   drive(-255, -255);
-  delay(380);
+  delay(390);
   drive(0, 0);
   digitalWrite(PASSIVE_A, 0);
 
-  claw_r.write(CLAWRCLOSE + 15);
-  claw_l.write(CLAWLCLOSE + 15);
+  claw_r.write(CLAWRCLOSE + 29);
+  claw_l.write(CLAWLCLOSE + 29);
   delay(200);
   //  wait_button(0);
   manup_r.write(MANDOWNISHR - 0);
   manup_l.write(MANDOWNISHL + 0);
-  delay(600);
+  delay(500);
   claw_r.write(CLAWROPENISH);
   claw_l.write(CLAWLOPENISH);
   //  wait_button(0);
-  delay(400);
+  delay(600);
 
-  manup_r.write(MANDOWNR - 3);
-  manup_l.write(MANDOWNL + 3);
+  manup_r.write(MANDOWNR - 2);
+  manup_l.write(MANDOWNL + 2);
   delay(400);
 
   claw_l.write(CLAWLCLOSE);

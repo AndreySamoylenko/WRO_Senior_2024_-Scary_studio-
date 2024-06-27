@@ -21,17 +21,18 @@ void sborGB(int pos) {
         table_serv.write(29);
         beep(100);
       }
-      MoveSync(80, 80, 0, 98, 8);
+      MoveSync(80, 80, 0, 98-16*bread, 8);
       RightGrab();
+
       break;
 
     case 11:
       LeftGrab();
-      MoveSync(-80, -80, 0, 98, 8);
+      MoveSync(-80, -80, 0, 98-16*bread, 8);
       LeftGrab();
-      if (bread ==1)
-        MoveSync(80, 80, 0, 98, 8);
-        
+      if (bread == 1)
+        MoveSync(80, 80, 0, 98-16*bread, 8);
+
       break;
 
     case 21:
@@ -65,6 +66,7 @@ void sborGBinv(int pos) {
       LeftGrab();
       MoveSync(80, 80, 0, 98, 8);
       LeftGrab();
+      MoveSync(-80, -80, 0, 98, 8);
       break;
 
     case 21:
@@ -72,6 +74,7 @@ void sborGBinv(int pos) {
       RightGrab();
       MoveSync(80, 80, 0, 196, 7);
       LeftGrab();
+      MoveSync(-80, -80, 0, 95, 8);
       break;
 
 
@@ -79,6 +82,8 @@ void sborGBinv(int pos) {
   }
   manRightUp();
   manLeftUp();
+  MoveSync(-190, -190, 1, pos == 22 ? 160 : 240, 40);
+
 }
 
 int logicGrab(char cubes[2]) {

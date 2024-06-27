@@ -50,9 +50,13 @@ void getColors() {
 
 
 void get_color_man() {
-  delay(200);
-  if ( get_distance() > 130 and get_distance() < 170)
-    colorl = 'g';
-  else if  ( get_distance() > 625 and get_distance() < 700)
-    colorl = 'b';
+  for (int i = 0; i < 3; i ++) {
+    if ( get_distance() > 300 and get_distance() < 400)
+      colorl = 'g';
+    else if  ( get_distance() > 650 and get_distance() < 750)
+      colorl = 'b';
+    else
+      colorl = 'd';
+    delay(520);
+  }
 }

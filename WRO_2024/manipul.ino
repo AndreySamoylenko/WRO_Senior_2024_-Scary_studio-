@@ -86,7 +86,7 @@ void manLeftDown(int pos) {
   else if (pos == 5)
     manup_l.write(MANDOWNISHL);
     else if (pos == 7)
-    manup_l.write(MANDOWNL-15);
+    manup_l.write(MANDOWNL-8);
 
 }
 
@@ -210,7 +210,7 @@ void ramkTube() {
 }
 
 void ramkTubeUp(int del) {
-  for (int i = ramk.read(); i < 80; i++) {
+  for (int i = 30; i < 80; i++) {
     if (i>40 and i < 70)
     drive(-30,-30);
     else
