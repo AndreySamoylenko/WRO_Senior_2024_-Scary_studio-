@@ -110,5 +110,5 @@ void MoveSync (float sped1, float sped2,  int r, uint32_t dist, int stop) {
 
 void turn(float sped, int side, int angle) {
   delay(50);
-  MoveSync(side * sped, -side * sped, 0, angle * 1.73, 6);
+  MoveSync(side * sped, -side * sped, 0, angle * 1.78, 6);
 }

@@ -65,13 +65,13 @@ Servo ramk;
 Servo t_servo;
 Servo table_serv;
 //---------------------------MANIPULATOR-----------------
-#define MANUPL 33 // всякие константы, замеренные через боль пот и слёзы
+#define MANUPL 32 // всякие константы, замеренные через боль пот и слёзы
 #define MANDOWNL 105
 #define MANDOWNISHL 92
 #define MANDOWNISHISHL 80
 #define MANDOWNDROPL 105
 
-#define MANUPR 116
+#define MANUPR 117
 #define MANDOWNR 39
 #define MANDOWNISHR 52
 #define MANDOWNISHISHR 64
@@ -93,19 +93,19 @@ Servo table_serv;
 
 // калибровка всякого
 
-int datflmin = 516;
-int datfrmin = 508;
-int datblmin = 500;
-int datbrmin = 490;
-int datplmin = 120;
-int datprmin = 150;
+int datflmin = 439;
+int datfrmin = 420;
+int datblmin = 421;
+int datbrmin = 464;
+int datplmin = 300;
+int datprmin = 340;
 
-int datflmax = 988;
-int datfrmax = 988;
-int datblmax = 988;
-int datbrmax = 988;
-int datplmax = 600;
-int datprmax = 700;
+int datflmax = 942;
+int datfrmax = 943;
+int datblmax = 980;
+int datbrmax = 980;
+int datplmax = 770;
+int datprmax = 880;
 
 float e_old = 0;
 float dat1, dat2 = 0;
@@ -123,8 +123,8 @@ int r2y_count = 0;
 // объявление всякого
 char colorr = 'r'; // цвет после скана цвета слева
 char colorl = 'y';// то же самое только справа
-char colorsl[4] = {'b', 'b', 'b', ' '}; // массив кубов левого шкафа
-char colorsr[4] = {'g', 'g', 'g', ' '}; // массив кубов правого
+char colorsl[4] = {' ', ' ', ' ', ' '}; // массив кубов левого шкафа
+char colorsr[4] = {' ', ' ', ' ', ' '}; // массив кубов правого
 
 uint32_t time = millis(); // переменные нужные для подсчета времени
 uint32_t time2 = millis();
@@ -140,7 +140,7 @@ bool bread = 0;
 
 char left_grob = colorsl[0];  // цвет кубов, которые везем в левом шкафу
 char right_grob = colorsr[0]; // то же самое для правого
-char start_cubes[2] = {' ', ' '}; // цвет кубов у старта
+char start_cubes[2] = {'b', 'b'}; // цвет кубов у старта
 const char random_colors[8] = {'r', 'y', 'g', 'b', 'd', 'r', 'y', 'g'}; // не важн
 
 GyverOLED<SSD1306_128x64, OLED_BUFFER> oled; // инициализация дисплея
@@ -219,22 +219,23 @@ void setup(void) {
 
   digitalWrite(RELAY_PIN, 1);
   delay(50);
+  digitalWrite(RELAY_PIN, 0);
 
 
 
-  t_up();
+  //  t_up();
   manup_l.write(MANUPL);
   manup_r.write(MANUPR);
   delay(100);
-  claw_l.write(CLAWLOPENISH);
-  claw_r.write(CLAWROPENISH);
+  //  claw_l.write(CLAWLOPENISH);
+  //  claw_r.write(CLAWROPENISH);
 
   delay(250);
 
   claw_l.write(CLAWLCLOSE);
   claw_r.write(CLAWRCLOSE);
   table_serv.write(94);
-  ramk.write(90);
+  //  ramk.write(90);
 
 
   beep(200);
@@ -260,11 +261,14 @@ void setup(void) {
   delay(150);
   ramk.write(130);
   t_down();
+
+  digitalWrite(RELAY_PIN, 1);
+  delay(50);
 }
 
 //------------------------------------------------------- START TYPE -------------------------------------------------------------
 
-#define START_TYPE  1 // 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
+#define START_TYPE  0 // 0 = storona dalshe ot musora, 1 = storona blizhe k musoru
 
 // start
 // 1 - 28.4 secs
@@ -275,31 +279,35 @@ void setup(void) {
 
 void loop(void) {
   //----------------------testing------------------------------
-//  wait_button(0);
-//  t_up();
-//  table_serv.write(158);
-//  pidx(0.2, 0.02, 3, 60, 0, 0, 60);
-//  //  most();
-//  //  wait_button(0);
-//  obstacle();
-//digitalWrite(STATE_PIN,1);
-//delay(200);
-//digitalWrite(STATE_PIN,0);
-//delay(200);
-//while(1){
-//  get_color_man();
-//  indicate1(colorl,6);
-//  Serial.println(get_distance());
-//  lent.show();
-//  delay(600);
-//}
+  //  while(1){
+  //    Serial.println(get_distance());
+  //  }
+  //  wait_button(0);
+  //  t_up();
+  //  table_serv.write(158);
+  //  pidx(0.2, 0.02, 3, 60, 0, 0, 60);
+  //  //  most();
+  //  //  wait_button(0);
+  //  obstacle();
+  //digitalWrite(STATE_PIN,1);
+  //delay(200);
+  //digitalWrite(STATE_PIN,0);
+  //delay(200);
+  //while(1){
+  //  get_color_man();
+  //  indicate1(colorl,6);
+  //  Serial.println(get_distance());
+  //  lent.show();
+  //  delay(600);
+  //}
   //-----------------------main program------------------------
-  time = millis();
+
   wait_button(0);
+  time = millis();
   start();
   main_loop();
   timer();
   wait_button(0);
 
-  delay(100000);
+  delay(10000);
 }

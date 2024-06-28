@@ -2,45 +2,40 @@
 void trashMost() {
   //--------------------BLACK TRASH--------------------
   pidx(0.2, 0.02, 3, 60, 0, 0, 9);
-  table_serv.write(28);
-  turn(120, -1, 95);
+
+  //  table_serv.write(28);
+  turn(120, -1, 105);
+  ramkUp();
   MoveSync(-90, -90, 0, 75, 5);
   ramkDown();
   delay(200);
-  MoveSync(0, 90, 0, 20, 5);
-  MoveSync(90, 90, 0, 55, 5);
-  turn(120, 1, 210);
-  MoveSync(-90, -90, 0, 120, 5);
-  ramkUp();
-  MoveSync(90, 90, 0, 120, 5);
-  turn(120, -1, 109);
-  ramkDown();
-  
+  MoveSync(90, 90, 0, 75, 5);
+  turnl(1, 120, -1);
+
+  //  ramkDown();
+
 }
 
 void trashNeMost() {
-  MoveSync(-110, -110, 0, 220, 22);
+  MoveSync(-160, -160, 0, 220, 22);
   turn(100, 1, 90);
   ramkUp();
-  MoveSync(-90, -90, 0, 135, 22);
+  MoveSync(-120, -120, 0, 140, 22);
   ramkDown();
   delay(300);//забрали желтый
   MoveSync(90, 90, 0, 35, 40);// отъехали от него
 
-  turn(90, -1, 92);
+  turn(90, -1, 90);
 
-  MoveSync(-90, -90, 0, 140, 0);// едем в сторону трубы
+  MoveSync(-120, -120, 0, 150, 0);// едем в сторону трубы
   ramk.write(30); // приподнятое положение рамки чтобы собрать черный и не потерять остальные
-  MoveSync(-90, -90, 0, 147, 22); // продолжаем ехать в сторону трубы
+  MoveSync(-90, -90, 0, 150, 22); // продолжаем ехать в сторону трубы
   ramkDown();
-  delay(150);
-  ramkTube();   // забрали чёрный и приподняли рамку
-  delay(100);
-
-  //  wait_button(0);
-
-  driveToWall(605); // доезд по датчику
-  ramkTubeUp(3); // сделали трубу
+  delay(250);
+  ramkTube();
+  delay(400);
+  driveToWall(540); // подъезд к трубе
+  ramkTubeUp(3);
   ramkTubeUp(4);
   delay(400);
   ramkDown(); // не отпускаем мусор
@@ -58,7 +53,7 @@ void trashNeMost() {
   MoveSync(80, 80, 1, 180, 40); //  подЪезд к кубам
   getColors();  // считываем цвет кубиков
 
-  MoveSync(0, 90, 1, 30, 40); 
+  MoveSync(0, 90, 1, 25, 40);
   bread = 1;
 
 
@@ -66,9 +61,9 @@ void trashNeMost() {
   indicate1(colorl, 8);
   if (USE_LED == 1)
     lent.show();  // выводим на ленту цвета кубов
-  MoveSync(-100, -100, 0, 53, 60); // отъезжаем от  кубов
+  MoveSync(-100, -100, 0, 51, 60); // отъезжаем от  кубов
   turn(90, -1, 93);
-  MoveSync(-80, -80, 0, 20, 9);
+  MoveSync(-80, -80, 0, 15, 9);
   manRightDown(2);
   manLeftDown(2);
   delay(300);
@@ -78,22 +73,23 @@ void trashNeMost() {
   bread = 0;
   drive(100, 100);
   delay(900);
-  MoveSync(-120, -120, 0, 160, 90);
-  turn(90, -1, 93);
-  MoveSync(250, 250, 0, 470, 0);
+  MoveSync(-120, -120, 0, 140, 90);
+  turn(110, -1, 92);
+  MoveSync(250, 250, 0, 490, 0);
   MoveSync(50, 50, 0, 60, 20);
   //  wait_button(0);
 }
 
 void sbros() {
-  ramk.write(30);
+
   turn(120, 1, 105);
-  MoveSync(-90, -90, 0, 200, 0);
+  ramk.write(30);
+  MoveSync(-160, -160, 0, 200, 0);
   ramkDown();
-  MoveSync(-90, -90, 0, 100, 5);
-  MoveSync(0, -90, 0, 130, 0);
-  MoveSync(-200, -200, 1, 370, 0);
-  
+  MoveSync(-160, -160, 0, 100, 5);
+  MoveSync(0, -160, 0, 140, 0);
+  MoveSync(-250, -250, 1, 370, 0);
+
   MoveSync(-80, -80, 0, 100, 20);
   ramkUp();
   delay(200);

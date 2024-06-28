@@ -8,8 +8,8 @@ void obstacle() {
   delay(50);
   ramkUp();
   MoveSync(0, 130, 0, 290, 80);
-  MoveSync(130, 0, 0, 635, 8);
-//  wait_button(0);
+  MoveSync(130, 0, 0, 633, 8);
+  //  wait_button(0);
   manRightUp();
   MoveSync(130, 130, 0, 150, 0);
   drive(120, 120);
@@ -31,15 +31,16 @@ void obstacle() {
 
   for (int i = 97; i > 65; i--) {
     manup_l.write(i);
-    t_servo.write(map(i, 65, 97, 47, 80));
+    t_servo.write(map(i, 65, 97, 47, 80 + 5));
     delay(45);
   }
-  table_serv.write(155);
   t_up();
+  table_serv.write(155);
+  
   manRightDown(2);
   manLeftDown(2);
   delay(200);
-//  wait_button(0);
+  //  wait_button(0);
   char finish_cubes[2] = {' ', ' '};
   //  wait_button(0);
   if (colorsl[3] == ' ' and colorsr[3] == ' ') {
@@ -106,7 +107,7 @@ void obstacle() {
   pidenc(0.25, 0.03, 3, -100, 0, 230, 0);
   pidx(0.3, 0.02, 3, 80, 0, 0, 80);
 
-  MoveSync(0, -120, 0, 230, 60);
+  MoveSync(0, -120, 0, 240, 60);
   MoveSync(-120, 0, 0, 250, 60);
 
   if (left_grob == 'b') {
@@ -129,7 +130,7 @@ void obstacle() {
     t_servo.write(110);
     MoveSync(23, 255, 0, 380, 20);
     manLeftDown(1);
-    //    MoveSync(255, 255, 0, 100, 20);
+    MoveSync(255, 255, 0, 100, 20);
   }
   else {
     MoveSync(-255, 0, 0, 100, 0);

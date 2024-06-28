@@ -34,7 +34,7 @@ void timer() {
 
 
 int autoBreak(float speed) {
-  return round(log10(speed + 5) / log10(1.0114381)) - 270;
+  return (round(log10(speed + 5) / log10(1.0114381)) - 270)*0.7;
 }
 
 void broItsCRINGE(byte bite) {

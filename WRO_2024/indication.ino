@@ -67,8 +67,8 @@ void lenta_color(char col[4]) {
 }
 
 void indicate8(char cols[8]) {
-  for (int i = 0; i < 16; i+=2) {
-    indicate1(cols[i/2], i);
+  for (int i = 0; i < 16; i += 2) {
+    indicate1(cols[i / 2], i);
   }
   lent.show();
 }
